@@ -3,8 +3,8 @@
 #include <WiFi.h>
 #include "esp_crc.h"
 #include "esp_adc_cal.h"
-// #define __HOME__
-#define __OFFICE__
+#define __HOME__
+// #define __OFFICE__
 #include "types.h"
 
 // #define _DEV1_
@@ -41,7 +41,7 @@ volatile bool has_data = false;
 esp_now_packet_t gateway_packet;
 static bool handshaked = false;
 static bool is_getting_value = false;
-static uint8_t interval = 2000;
+static uint32_t interval = 2000;
 
 void printPacket(const esp_now_packet_t &pkt);
 
@@ -63,6 +63,10 @@ void esp_now_recv_cb(const uint8_t *mac_addr, const uint8_t *data, int data_len)
 
 void setup() {
   Serial.begin(115200);
+
+  pinMode(POWER_LED_PIN, OUTPUT);
+  pinMode(NOW_LED_PIN, OUTPUT);
+  digitalWrite(NOW_LED_PIN, HIGH); // Power ON
 
   WiFi.mode(WIFI_AP_STA);
   WiFi.begin(WIFI_SSID, WIFI_PASSWORD);
@@ -88,9 +92,6 @@ void setup() {
     Serial.println("Gateway peer added");
   else
     Serial.println("Failed to add gateway peer");
-
-  pinMode(POWER_LED_PIN, OUTPUT);
-  pinMode(NOW_LED_PIN, OUTPUT);
 
 #ifdef _DEV1_
   dht.begin();
@@ -216,6 +217,6 @@ void get_sensor_data(void) {
   uint32_t mv = esp_adc_cal_raw_to_voltage(raw, adc_chars);
   float voltage = mv / 1000.0f;
   guva_value = voltage / 0.1f;  // mW/cm² gần đúng
-  ldr_value = digitalRead(LDR_PIN);
+  ldr_value = !digitalRead(LDR_PIN);
 #endif
 }
