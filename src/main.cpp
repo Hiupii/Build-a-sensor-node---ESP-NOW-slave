@@ -3,12 +3,13 @@
 #include <WiFi.h>
 #include "esp_crc.h"
 #include "esp_adc_cal.h"
-#define __HOME__
+#define __RELEASE__
+// #define __HOME__
 // #define __OFFICE__
 #include "types.h"
 
-// #define _DEV1_
-#define _DEV2_
+#define _DEV1_
+// #define _DEV2_
 
 #define POWER_LED_PIN 26
 #define NOW_LED_PIN   25

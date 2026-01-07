@@ -11,6 +11,11 @@ extern "C" {
 #include <Arduino.h>
 #include <esp_now.h>
 
+#ifdef __RELEASE__
+#define WIFI_SSID "Vanchang2003"
+#define WIFI_PASSWORD "123456789"
+#endif
+
 #ifdef __HOME__
 #define WIFI_SSID "ぼっち・ざ・ろっく"
 #define WIFI_PASSWORD "22222222"
